@@ -81,7 +81,23 @@ long __stdcall end_scane_hook::hook(IDirect3DDevice9* device)
     if (!is_init)
         init(device);
 
+    IDirect3DStateBlock9* pixel_state = NULL;
+    IDirect3DVertexDeclaration9* vertex_declaration;
+    IDirect3DVertexShader9* vertex_shader;
+
+
+    device->CreateStateBlock(D3DSBT_PIXELSTATE, &pixel_state);
+    device->GetVertexDeclaration(&vertex_declaration);
+    device->GetVertexShader(&vertex_shader);
+
+    device->SetRenderState(D3DRS_COLORWRITEENABLE, 0xffffffff);
+	
     RenderTool->render_frame();
 
+    pixel_state->Apply();
+    pixel_state->Release();
+    device->SetVertexDeclaration(vertex_declaration);
+    device->SetVertexShader(vertex_shader);
+	
     return ret;
 }

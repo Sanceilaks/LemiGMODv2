@@ -10,3 +10,5 @@ CMisc* settings::Misc = new CMisc();
 CAimBot* settings::AimBot = new CAimBot();
 
 CVisuals* settings::Visuals = new CVisuals();
+
+CRage* settings::Rage = new CRage();

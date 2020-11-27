@@ -11,13 +11,14 @@ enum class Tabs
 {
 	NONE,
 	LEGIT,
+	RAGE,
 	ESP,
 	VISUALS,
 	MISC,
 	CONFIG
 };
 
-Tabs current_tabs[5] = { Tabs::NONE , Tabs::NONE,  Tabs::NONE,  Tabs::NONE ,  Tabs::NONE };
+Tabs current_tabs[6] = { Tabs::NONE , Tabs::NONE, Tabs::NONE,  Tabs::NONE,  Tabs::NONE ,  Tabs::NONE };
 
 void draw_tabs()
 {
@@ -27,13 +28,15 @@ void draw_tabs()
 	ImGui::BeginGroup();
 	if (ImGui::Button("Legit bot")) if (current_tabs[0] == Tabs::LEGIT) current_tabs[0] = Tabs::NONE; else current_tabs[0] = Tabs::LEGIT;
 	ImGui::SameLine();
-	if (ImGui::Button("ESP")) if (current_tabs[1] == Tabs::ESP) current_tabs[1] = Tabs::NONE; else current_tabs[1] = Tabs::ESP;
+	if (ImGui::Button("Rage")) if (current_tabs[1] == Tabs::RAGE) current_tabs[1] = Tabs::NONE; else current_tabs[1] = Tabs::RAGE;
 	ImGui::SameLine();
-	if (ImGui::Button("Visual")) if (current_tabs[2] == Tabs::VISUALS) current_tabs[2] = Tabs::NONE; else current_tabs[2] = Tabs::VISUALS;
+	if (ImGui::Button("ESP")) if (current_tabs[2] == Tabs::ESP) current_tabs[2] = Tabs::NONE; else current_tabs[2] = Tabs::ESP;
 	ImGui::SameLine();
-	if (ImGui::Button("Misc")) if (current_tabs[3] == Tabs::MISC) current_tabs[3] = Tabs::NONE; else current_tabs[3] = Tabs::MISC;
+	if (ImGui::Button("Visual")) if (current_tabs[3] == Tabs::VISUALS) current_tabs[3] = Tabs::NONE; else current_tabs[3] = Tabs::VISUALS;
 	ImGui::SameLine();
-	if (ImGui::Button("Config")) if (current_tabs[4] == Tabs::CONFIG) current_tabs[4] = Tabs::NONE; else current_tabs[4] = Tabs::CONFIG;
+	if (ImGui::Button("Misc")) if (current_tabs[4] == Tabs::MISC) current_tabs[4] = Tabs::NONE; else current_tabs[4] = Tabs::MISC;
+	ImGui::SameLine();
+	if (ImGui::Button("Config")) if (current_tabs[5] == Tabs::CONFIG) current_tabs[5] = Tabs::NONE; else current_tabs[5] = Tabs::CONFIG;
 	ImGui::EndGroup();
 	//ImGui::EndChild();
 }
@@ -117,7 +120,7 @@ void draw_aimbot()
 
 	ImGui::BeginChild("###AimBot", ImVec2(ImGui::GetWindowWidth() / 2, 0), true);
 
-	ImGui::Checkbox("AimBot", &settings::AimBot->aim_enable);
+	ImGui::Checkbox("AimBot", settings::Rage->rage_enable ? (bool*)0 : &settings::AimBot->aim_enable);
 	ImGui::SameLine();
 	ImGui::Checkbox("Silent", &settings::AimBot->silent);
 	ImGui::SameLine();
@@ -136,14 +139,25 @@ void draw_aimbot()
 
 	ImGui::SameLine();
 
-	ImGui::BeginChild("###RageBot", ImVec2(ImGui::GetWindowWidth() / 2 - xx * 3, 0), true);
+	ImGui::End();
+}
 
+void draw_rage()
+{
+	ImGui::Begin("Rage##tab");
+
+	ImGui::BeginChild("##Rage", ImVec2(ImGui::GetWindowWidth()/* / 2*/, 0), true);
+
+	ImGui::Checkbox("Rage##enabled", &settings::Rage->rage_enable);
+	ImGui::Checkbox("Silent##rage", &settings::Rage->silent);
+	ImGui::Spacing();
 	ImGui::Checkbox("AntiAim", &settings::AimBot->anti_aim_enable);
 	ImGui::SameLine();
-	const char* antiaim_types[2] = { "yaw", "jitter" };
-	ImGui::Combo("AntiAim type", &settings::AimBot->anti_aim_type, antiaim_types, 2);
-
+	const char* antiaim_types[3] = { "yaw", "jitter", "forward" };
+	ImGui::Combo("AntiAim type", &settings::AimBot->anti_aim_type, antiaim_types, 3);
+	
 	ImGui::EndChild();
+	
 	ImGui::End();
 }
 
@@ -179,7 +193,7 @@ void CMenu::draw()
 	ImGui::PopStyleVar();
 
 
-	for (int i = 0; i <= 4; ++i)
+	for (int i = 0; i <= 5; ++i)
 	{
 		switch (current_tabs[i])
 		{
@@ -187,6 +201,9 @@ void CMenu::draw()
 			break;
 		case Tabs::LEGIT:
 			draw_aimbot();
+			break;
+		case Tabs::RAGE:
+			draw_rage();
 			break;
 		case Tabs::ESP:
 			draw_esp();

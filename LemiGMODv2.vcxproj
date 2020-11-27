@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\ProgramsData\DXSDK\Include;D:\VSP\LemiGMODv2\deps;%(AdditionalIncludeDirectories);$(SolutionDir)src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\ProgramsData\DXSDK\Include;$(SolutionDir)deps;%(AdditionalIncludeDirectories);$(SolutionDir)src</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -160,6 +160,9 @@
     <ClCompile Include="src\features\aim_bot\aim_bot.cpp" />
     <ClCompile Include="src\features\menu\custom_widgets.cpp" />
     <ClCompile Include="src\features\menu\menu.cpp" />
+    <ClCompile Include="src\features\misc\misc.cpp" />
+    <ClCompile Include="src\features\misc\move.cpp" />
+    <ClCompile Include="src\features\rage\rage.cpp" />
     <ClCompile Include="src\features\visuals\chams.cpp" />
     <ClCompile Include="src\features\visuals\esp.cpp" />
     <ClCompile Include="src\features\visuals\visuals.cpp" />
@@ -204,6 +207,9 @@
     <ClInclude Include="src\features\aim_bot\aim_bot.h" />
     <ClInclude Include="src\features\menu\custom_widgets.h" />
     <ClInclude Include="src\features\menu\menu.h" />
+    <ClInclude Include="src\features\misc\misc.h" />
+    <ClInclude Include="src\features\misc\move.h" />
+    <ClInclude Include="src\features\rage\rage.h" />
     <ClInclude Include="src\features\visuals\chams.h" />
     <ClInclude Include="src\features\visuals\esp.h" />
     <ClInclude Include="src\features\visuals\visuals.h" />

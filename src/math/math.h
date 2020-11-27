@@ -79,6 +79,12 @@ public:
 	template < typename t >
 	t fclamp(t in, t low, t high) 
 	{
+		#ifdef min
+		#undef min;
+		#endif
+		#ifdef max
+		#undef max;
+		#endif
 		return std::min(std::max(in, low), high);
 	}
 }; extern CMath* Math;

@@ -8,6 +8,7 @@ namespace settings
 	{
 		yaw = 0,
 		jitter,
+		forward
 	};
 
 	class CESP
@@ -52,6 +53,15 @@ namespace settings
 
 	}; extern CAimBot* AimBot;
 
+	class CRage
+	{
+	public:
+		bool rage_enable = false;
+		bool silent = true;
+		bool only_visible = true;
+		
+	}; extern CRage* Rage;
+	
 	class CVisuals
 	{
 	public:

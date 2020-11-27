@@ -90,7 +90,7 @@ void CAimBot::antiaim(CUserCmd* ucmd)
 	if (!settings::AimBot->anti_aim_enable)
 		return;
 
-	if (ucmd->buttons & IN_ATTACK)
+	if (ucmd->buttons & IN_ATTACK || ucmd->buttons & IN_USE)
 		return;
 
 	if (settings::AimBot->anti_aim_type == settings::AntiAimType::yaw)
@@ -108,5 +108,12 @@ void CAimBot::antiaim(CUserCmd* ucmd)
 		switcher = !switcher;
 
 		ucmd->viewangles -= 90;
+	}
+	else if (settings::AimBot->anti_aim_type == settings::AntiAimType::forward)
+	{
+		ucmd->viewangles.x = 89.f;
+		ucmd->viewangles.y *= -1.f;
+		ucmd->viewangles.z = 0.f;
+		ucmd->viewangles.Clamp();
 	}
 }

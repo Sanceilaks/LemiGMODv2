@@ -3,6 +3,25 @@
 #include <string>
 #include <tools/color.h>
 
+enum EMoveType
+{
+	MOVETYPE_NONE = 0,
+	MOVETYPE_ISOMETRIC,
+	MOVETYPE_WALK,
+	MOVETYPE_STEP,
+	MOVETYPE_FLY,
+	MOVETYPE_FLYGRAVITY,
+	MOVETYPE_VPHYSICS,
+	MOVETYPE_PUSH,
+	MOVETYPE_NOCLIP,
+	MOVETYPE_LADDER,
+	MOVETYPE_OBSERVER,
+	MOVETYPE_CUSTOM,
+	MOVETYPE_LAST = MOVETYPE_CUSTOM,
+	MOVETYPE_MAX_BITS = 4,
+	MAX_MOVETYPE
+};
+
 class CBasePlayer : public CBaseEntity
 {
 public:
@@ -10,7 +29,10 @@ public:
 	NETVAR("DT_BasePlayer", "m_vecViewOffset[0]", get_view_offset, Vector);
 	NETVAR("DT_BaseCombatCharacter", "m_hActiveWeapon", ActiveWeaponHandle, uintptr_t);
 	NETVAR("DT_BasePlayer", "m_vecVelocity[0]", get_velocity, Vector);
+	NETVAR("DT_BaseEntity", "m_MoveType", get_move_type, int);
 
+		
+	
 	static CBasePlayer* get_local_player()
 	{
 		return (CBasePlayer*)Interfaces->entity_list->get_entity_by_index(Interfaces->engine->get_local_player());

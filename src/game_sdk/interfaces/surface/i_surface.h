@@ -123,13 +123,13 @@ public:			//Surface draw funcs == screen will grabbed
 
 	unsigned long create_font()
 	{
-		using fn =long(__thiscall*)(ISurface*);
+		using fn = unsigned long(__thiscall*)(ISurface*);
 		return (*(fn**)this)[66](this);
 	}
 
-	void set_font_style(unsigned long font, const char* windowsFontName, int tall, int weight, int blur, int scanlines, int flags)
+	bool set_font_style(unsigned long font, const char* windowsFontName, int tall, int weight, int blur, int scanlines, int flags)
 	{
-		using fn = void(__thiscall*)(ISurface*, unsigned long, const char*, int, int, int, int, int, int, int);
+		using fn = bool(__thiscall*)(ISurface*, unsigned long, const char*, int, int, int, int, int, int, int);
 		return (*(fn**)this)[67](this, font, windowsFontName, tall, weight, blur, scanlines, flags, 0, 0);
 	}
 	
