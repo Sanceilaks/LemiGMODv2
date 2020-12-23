@@ -118,9 +118,13 @@ void draw_aimbot()
 	float xx = ImGui::GetStyle().ItemSpacing.x;
 	float yy = ImGui::GetStyle().FramePadding.y;
 
+
+	
 	ImGui::BeginChild("###AimBot", ImVec2(ImGui::GetWindowWidth() / 2, 0), true);
 
-	ImGui::Checkbox("AimBot", settings::Rage->rage_enable ? (bool*)0 : &settings::AimBot->aim_enable);
+	bool if_rage = false;
+	
+	ImGui::Checkbox("AimBot", settings::Rage->rage_enable ? &if_rage : &settings::AimBot->aim_enable);
 	ImGui::SameLine();
 	ImGui::Checkbox("Silent", &settings::AimBot->silent);
 	ImGui::SameLine();
@@ -163,7 +167,9 @@ void draw_rage()
 
 void draw_visuals()
 {
-	ImGui::Begin("Visuals", (bool*)0, ImGuiWindowFlags_NoScrollbar);
+
+	
+	ImGui::Begin("Visuals", ((bool*)0), ImGuiWindowFlags_NoScrollbar);
 	ImGui::BeginChild("###Visuals", ImVec2(0, 0), true);
 
 	ImGui::Checkbox("Draw fov", &settings::Visuals->draw_fov);

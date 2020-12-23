@@ -74,12 +74,12 @@ void draw_name(CBasePlayer* ply)
 	std::string name = ply->get_name();
 
 	int w, h;
-	Interfaces->surface->get_text_size(settings::ESP->esp_font.at(11), get_wc_t(name.c_str()), w, h);
+	Interfaces->surface->get_text_size(settings::ESP->esp_font.at(0), get_wc_t(name.c_str()), w, h);
 
 	if (!settings::ESP->is_team_name_color)
-		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(11), name, true, Color(settings::ESP->visible_name_color));
+		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(0), name, true, Color(settings::ESP->visible_name_color));
 	else
-		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(11), name, true, ply->get_team_color());
+		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(0), name, true, ply->get_team_color());
 }
 
 void draw_box(CBasePlayer* ply)

@@ -8,6 +8,10 @@
 #include <interfaces.h>
 #include <globals.h>
 
+#include <iostream>
+#include <chrono>
+#include <thread>
+
 CRenderTool* RenderTool = new CRenderTool();
 
 #pragma region RenderTool
@@ -16,7 +20,9 @@ void CRenderTool::init(IDirect3DDevice9* device)
 {
 	this->device = device;
 
-	RenderTool->create_draw_font(settings::ESP->esp_font, "Corbel", 100, (int)EFontFlags::FONTFLAG_DROPSHADOW);
+	unsigned long tmp = Interfaces->surface->create_font();
+	Interfaces->surface->set_font_style(tmp, "Corbel", 11, 500, 0, 0, (int)EFontFlags::FONTFLAG_DROPSHADOW);
+	settings::ESP->esp_font.push_back(tmp);
 }
 
 void CRenderTool::render_frame()
@@ -73,6 +79,8 @@ void CRenderTool::create_draw_font(std::vector<unsigned long>& in, const char* w
 	//	std::this_thread::sleep_for(std::chrono::milliseconds(25));
 	//}
 
+	using namespace std::chrono_literals;
+	
 	for (int i = 1; i <= max_size; ++i)
 	{
 		unsigned long tmp = Interfaces->surface->create_font();

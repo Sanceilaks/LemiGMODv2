@@ -55,8 +55,8 @@ CBasePlayer* Rage::get_closest(QAngle& out_angle, CUserCmd* cmd)
 
 			float fov = Math->get_fov(cmd->viewangles, aim_ang);
 
-			//if (settings::AimBot->only_visible && !ent->is_visible_by(local_player))
-				//continue;
+			if (!ent->is_visible_by(local_player))
+				continue;
 
 			//if (fov > settings::AimBot->fov)
 				//continue;

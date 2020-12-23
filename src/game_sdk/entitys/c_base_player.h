@@ -29,8 +29,28 @@ public:
 	NETVAR("DT_BasePlayer", "m_vecViewOffset[0]", get_view_offset, Vector);
 	NETVAR("DT_BaseCombatCharacter", "m_hActiveWeapon", ActiveWeaponHandle, uintptr_t);
 	NETVAR("DT_BasePlayer", "m_vecVelocity[0]", get_velocity, Vector);
-	NETVAR("DT_BaseEntity", "m_MoveType", get_move_type, int);
+	
+	int get_move_type()
+	{
+		auto glua = Interfaces->lua_shared->get_interface(LUA::Type::client);
 
+		if (!glua)
+			return {};
+
+		glua->PushSpecial((int)LUA::Special::glob);
+		glua->GetField(-1, "Entity");
+		glua->PushNumber(this->get_index());
+		glua->Call(1, 1);
+
+		glua->GetField(-1, "GetMoveType");
+		glua->Push(-2);
+		glua->Call(1, 1);
+
+		int type = static_cast<int>(glua->GetNumber(-1));
+		glua->Pop(3);
+
+		return type;
+	}
 		
 	
 	static CBasePlayer* get_local_player()
