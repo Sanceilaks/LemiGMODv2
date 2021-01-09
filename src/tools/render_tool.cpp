@@ -12,7 +12,7 @@
 #include <chrono>
 #include <thread>
 
-CRenderTool* RenderTool = new CRenderTool();
+CRenderTool* render_tool = new CRenderTool();
 
 #pragma region RenderTool
 
@@ -22,54 +22,53 @@ void CRenderTool::init(IDirect3DDevice9* device)
 
 	unsigned long tmp = Interfaces->surface->create_font();
 	Interfaces->surface->set_font_style(tmp, "Corbel", 11, 500, 0, 0, (int)EFontFlags::FONTFLAG_DROPSHADOW);
-	settings::ESP->esp_font.push_back(tmp);
+	settings::esp->esp_font.push_back(tmp);
+	settings::esp->esp_font.at(0) = tmp;
 }
 
 void CRenderTool::render_frame()
 {
-	RenderTool->render_dx();
-
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	Menu->draw();
+	menu->draw();
 
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 }
 
-void CRenderTool::render_dx()
-{
-	for (auto call : safe_draw_calls)
-	{
-		call->draw();
-	}
-}
-
-void CRenderTool::begin()
-{
-	draw_calls.clear();
-}
-
-void CRenderTool::end()
-{
-	std::unique_lock<std::shared_mutex> lock(mutex);
-	draw_calls.swap(safe_draw_calls);
-}
-
-void CRenderTool::render_filled_box(float x, float y, float w, float h, Color color)
-{
-	auto call = new DrawFilledBox(x, y, w, h, color);
-	draw_calls.push_back(call);
-}
-
-void CRenderTool::render_bordered_box(float x, float y, float w, float h, float t, Color color)
-{
-	auto call = new DrawBorderedBox(x, y, w, h, t, color);
-	draw_calls.push_back(call);
-}
-
+//void CRenderTool::render_dx()
+//{
+//	for (auto call : safe_draw_calls)
+//	{
+//		call->draw();
+//	}
+//}
+//
+//void CRenderTool::begin()
+//{
+//	draw_calls.clear();
+//}
+//
+//void CRenderTool::end()
+//{
+//	std::unique_lock<std::shared_mutex> lock(mutex);
+//	draw_calls.swap(safe_draw_calls);
+//}
+//
+//void CRenderTool::render_filled_box(float x, float y, float w, float h, Color color)
+//{
+//	auto call = new DrawFilledBox(x, y, w, h, color);
+//	draw_calls.push_back(call);
+//}
+//
+//void CRenderTool::render_bordered_box(float x, float y, float w, float h, float t, Color color)
+//{
+//	auto call = new DrawBorderedBox(x, y, w, h, t, color);
+//	draw_calls.push_back(call);
+//}
+//
 void CRenderTool::create_draw_font(std::vector<unsigned long>& in, const char* win_name, int max_size, int flags)
 {
 	std::vector<unsigned long> out;
@@ -126,39 +125,39 @@ void CRenderTool::draw_text(int x, int y, unsigned long font, const std::string&
 		surface->draw_text(temp, wcslen(temp));
 	}
 }
-
-void CRenderTool::create_im_font(std::vector<ImFont*>& in, const char* font, int max_size, const ImWchar* glyph_ranges, const ImFontConfig* font_cfg)
-{
-	std::vector<ImFont*> out;
-	ImGuiIO& io = ImGui::GetIO();
-
-	for (int i = 1; i <= max_size; ++i)
-	{
-		auto add = io.Fonts->AddFontFromFileTTF(font, i, font_cfg, glyph_ranges);
-		out.push_back(add);
-	}
-
-	in.swap(out);
-}
-
-#pragma endregion
-
-void DrawFilledBox::draw()
-{
-	D3DRECT rect = { x, y, x + w, y + h };
-	RenderTool->get_device()->Clear(1, &rect, D3DCLEAR_TARGET, RenderTool->get_draw_color(color), 0, 0);
-}
-
-void DrawBorderedBox::draw()
-{
-	auto draw_filled_rect = [](int x, int y, int w, int h, Color color) -> void
-	{
-		D3DRECT rect = { x, y, x + w, y + h };
-		RenderTool->get_device()->Clear(1, &rect, D3DCLEAR_TARGET, RenderTool->get_draw_color(color), 0, 0);
-	};
-
-	draw_filled_rect(x, y, w, t, color);
-	draw_filled_rect(x, y, t, h, color);
-	draw_filled_rect(x + w, y, t, h, color);
-	draw_filled_rect(x, y + h, w + t, t, color);
-}
+//
+//void CRenderTool::create_im_font(std::vector<ImFont*>& in, const char* font, int max_size, const ImWchar* glyph_ranges, const ImFontConfig* font_cfg)
+//{
+//	std::vector<ImFont*> out;
+//	ImGuiIO& io = ImGui::GetIO();
+//
+//	for (int i = 1; i <= max_size; ++i)
+//	{
+//		auto add = io.Fonts->AddFontFromFileTTF(font, i, font_cfg, glyph_ranges);
+//		out.push_back(add);
+//	}
+//
+//	in.swap(out);
+//}
+//
+//#pragma endregion
+//
+//void DrawFilledBox::draw()
+//{
+//	D3DRECT rect = { x, y, x + w, y + h };
+//	RenderTool->get_device()->Clear(1, &rect, D3DCLEAR_TARGET, RenderTool->get_draw_color(color), 0, 0);
+//}
+//
+//void DrawBorderedBox::draw()
+//{
+//	auto draw_filled_rect = [](int x, int y, int w, int h, Color color) -> void
+//	{
+//		D3DRECT rect = { x, y, x + w, y + h };
+//		RenderTool->get_device()->Clear(1, &rect, D3DCLEAR_TARGET, RenderTool->get_draw_color(color), 0, 0);
+//	};
+//
+//	draw_filled_rect(x, y, w, t, color);
+//	draw_filled_rect(x, y, t, h, color);
+//	draw_filled_rect(x + w, y, t, h, color);
+//	draw_filled_rect(x, y + h, w + t, t, color);
+//}

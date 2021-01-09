@@ -4,6 +4,7 @@
 #include "client/create_move_hook.h"
 #include "client/view_render_hook.h"
 #include "client/render_view_hook.h"
+#include "client/read_pixels_hook.h"
 
 //dx
 #include "directx/end_scane_hook.h"

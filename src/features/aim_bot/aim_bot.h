@@ -11,4 +11,6 @@ public:
 	void run(CUserCmd* cmd);
 
 	void antiaim(CUserCmd* ucmd);
+
+	void* target = nullptr;
 }; extern CAimBot* AimBot;

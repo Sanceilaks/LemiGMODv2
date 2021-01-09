@@ -7,7 +7,7 @@
 void __fastcall render_view_hook::hook(IViewRender* view_render, void* edx, CViewSetup& setup, int clear_flags, int what_to_draw)
 {
 
-	Globals->view = setup;
+	globals->view = setup;
 
 	return HooksManager->render_view_original(view_render, setup, clear_flags, what_to_draw);
 }

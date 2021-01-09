@@ -1,5 +1,9 @@
 #pragma once
 #include "qangle.h"
+#include "vector.h"
+#include "matrix.h"
+#include "vector2d.h"
+#include "vector4d.h"
 #include <algorithm>	//C4067
 
 #pragma warning( push )

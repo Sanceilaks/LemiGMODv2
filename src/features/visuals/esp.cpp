@@ -3,6 +3,8 @@
 #include <math/math.h>
 #include <tools/render_tool.h>
 #include <globals.h>
+#include <features/aim_bot/aim_bot.h>
+
 
 CESP* ESP = new CESP();
 
@@ -11,7 +13,7 @@ bool get_player_box(CBasePlayer* ent, Box& box_in)
 	Vector origin, min, max, flb, brt, blb, frt, frb, brb, blt, flt;
 	float left, top, right, bottom;
 
-	origin = ent->get_origin();
+	origin = ent->get_render_origin();
 	min = ent->collideable()->mins() + origin;
 	max = ent->collideable()->maxs() + origin;
 
@@ -57,13 +59,13 @@ bool get_player_box(CBasePlayer* ent, Box& box_in)
 	box_in.y = top;
 	box_in.w = right - left;
 	box_in.h = bottom - top;
-
+	
 	return true;
 }
 
 void draw_name(CBasePlayer* ply)
 {
-	if (!settings::ESP->draw_name)
+	if (!settings::esp->draw_name)
 		return;
 
 	Box box;
@@ -74,12 +76,12 @@ void draw_name(CBasePlayer* ply)
 	std::string name = ply->get_name();
 
 	int w, h;
-	Interfaces->surface->get_text_size(settings::ESP->esp_font.at(0), get_wc_t(name.c_str()), w, h);
+	Interfaces->surface->get_text_size(settings::esp->esp_font.at(0), get_wc_t(name.c_str()), w, h);
 
-	if (!settings::ESP->is_team_name_color)
-		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(0), name, true, Color(settings::ESP->visible_name_color));
+	if (!settings::esp->is_team_name_color)
+		render_tool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::esp->esp_font.at(0), name, true, Color(settings::esp->visible_name_color));
 	else
-		RenderTool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::ESP->esp_font.at(0), name, true, ply->get_team_color());
+		render_tool->draw_text(box.x + box.w * 0.5, box.y + box.h, settings::esp->esp_font.at(0), name, true, ply->get_team_color());
 }
 
 void draw_box(CBasePlayer* ply)
@@ -89,19 +91,21 @@ void draw_box(CBasePlayer* ply)
 	if (!get_player_box(ply, box))
 		return;
 
-	if (!settings::ESP->is_team_color)
-		RenderTool->draw_bordered_box(box.x, box.y, box.w, box.h, 2, Color(settings::ESP->visible_color));
-	else
-		RenderTool->draw_bordered_box(box.x, box.y, box.w, box.h, 2, ply->get_team_color());
+	auto color = settings::esp->is_team_color ? ply->get_team_color() : Color(settings::esp->visible_color);
+
+	render_tool->draw_bordered_box(box.x - 1, box.y - 1, box.w + 2, box.h + 2, 2, Color(0, 0, 0));
+	render_tool->draw_bordered_box(box.x + 1, box.y + 1, box.w - 2, box.h - 2, 2, Color(0, 0, 0));
+	
+	render_tool->draw_bordered_box(box.x, box.y, box.w, box.h, 2, color);
 }
 
 void CESP::draw()
 {
-	RenderTool->begin();
+	//ender_tool->begin();
 
-	if (!Interfaces->engine->is_in_game() || !settings::ESP->box_enable)
+	if (!Interfaces->engine->is_in_game() || !settings::esp->box_enable)
 	{
-		RenderTool->end();
+		//render_tool->end();
 		return;
 	}
 
@@ -109,7 +113,7 @@ void CESP::draw()
 
 	if (!local_player)
 	{
-		RenderTool->end();
+		//render_tool->end();
 		return;
 	}
 
@@ -124,16 +128,38 @@ void CESP::draw()
 		bool equallp = ply == local_player;
 		bool is_dormant = ply->is_dormant();
 
-		if (!is_alive || equallp /*|| is_dormant*/)
+		if (!is_alive || equallp || is_dormant)
 			continue;
 
 
 		if (!ply->is_player())
 			continue;
-
+		
 		draw_box(ply);
 		draw_name(ply);
+
+		if (AimBot->target)
+		{
+			auto target = (CBasePlayer*)AimBot->target;
+			if (target->is_player() && target->is_alive() && !target->is_dormant())
+			{
+				auto bone = target->get_entity_bone(ECSPlayerBones::head_0);
+				Vector screen_bone;
+				if (Math->world_to_screen(bone, screen_bone))
+				{
+					if (AimBot->is_aiming)
+					{
+						render_tool->draw_line(globals->screen_width * 0.5f, globals->screen_height, screen_bone.x, screen_bone.y, Color(0, 255, 0));
+
+						int w, h;
+						Interfaces->surface->get_text_size(settings::esp->esp_font.at(0), get_wc_t(target->get_name().c_str()), w, h);
+						
+						render_tool->draw_text(w + 20, globals->screen_height - 20 - h, settings::esp->esp_font.at(0), target->get_name(), true, Color(0, 255, 0));
+					}
+				}
+			}
+		}
 	}
 
-	RenderTool->end();
+	//render_tool->end();
 }

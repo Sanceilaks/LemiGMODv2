@@ -5,6 +5,9 @@
 
 #include <tools/render_tool.h>
 
+#include <stdio.h>
+#include <intrin.h>
+
 CHackCore* HackCore = new CHackCore();
 
 void CHackCore::init(void* dll)
@@ -31,5 +34,5 @@ void CHackCore::init(void* dll)
 	if (!HooksManager->init())
 		Logger->error("Hooks init error!");
 
-	RenderTool->init(Interfaces->directx_device);
+	render_tool->init(Interfaces->directx_device);
 }

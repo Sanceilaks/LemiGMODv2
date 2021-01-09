@@ -27,16 +27,16 @@ CBasePlayer* get_closest_player(QAngle& in_best_angel, CUserCmd* ucmd)
 		if (ent == local_player || !ent->is_player() || !ent->is_alive())
 			continue;
 
-		auto hit_pos = ent->get_entity_bone(ECSPlayerBones::head_0);
+		auto hit_pos = ent->get_entity_bone(ent->get_bone_id_by_name("ValveBiped.Bip01_Head1"));
 
 		QAngle aim_ang = CalcAngle(local_player->get_eye_pos(), hit_pos);
 
 		float fov = Math->get_fov(ucmd->viewangles, aim_ang);
 
-		if (settings::AimBot->only_visible && !ent->is_visible_by(local_player))
+		if (settings::legit_bot->only_visible && !ent->is_visible_by(local_player))
 			continue;
 
-		if (fov > settings::AimBot->fov)
+		if (fov > settings::legit_bot->fov)
 			continue;
 
 
@@ -55,7 +55,7 @@ CBasePlayer* get_closest_player(QAngle& in_best_angel, CUserCmd* ucmd)
 
 void CAimBot::run(CUserCmd* cmd)
 {
-	if (!Interfaces->engine->is_in_game() || !settings::AimBot->aim_enable)
+	if (!Interfaces->engine->is_in_game() || !settings::legit_bot->aim_enable)
 		return;
 	
 
@@ -63,23 +63,28 @@ void CAimBot::run(CUserCmd* cmd)
 	CBasePlayer* ply = get_closest_player(ang, cmd);
 
 	if (!ply)
+	{
+		target = nullptr;
 		return;
-
-	if (GetAsyncKeyState(settings::AimBot->aimkey) || settings::AimBot->aimkey == 0)
+	}
+	if (GetAsyncKeyState(settings::legit_bot->aimkey) || settings::legit_bot->aimkey == 0)
 	{
 		cmd->viewangles = ang;
 
-		if (settings::AimBot->auto_fire) cmd->buttons |= IN_ATTACK;
+		if (settings::legit_bot->auto_fire) cmd->buttons |= IN_ATTACK;
 
-		if (!settings::AimBot->silent)
+		if (!settings::legit_bot->silent)
 			Interfaces->engine->set_view_angles(ang);
 
 		//if (settings::AimBot->auto_fire) cmd->buttons &= ~IN_ATTACK;
 
+		target = ply;
+		
 		is_aiming = true;
 	}
 	else
 	{
+		target = nullptr;
 		is_aiming = false;
 	}
 
@@ -87,18 +92,18 @@ void CAimBot::run(CUserCmd* cmd)
 
 void CAimBot::antiaim(CUserCmd* ucmd)
 {
-	if (!settings::AimBot->anti_aim_enable)
+	if (!settings::legit_bot->anti_aim_enable)
 		return;
 
 	if (ucmd->buttons & IN_ATTACK || ucmd->buttons & IN_USE)
 		return;
 
-	if (settings::AimBot->anti_aim_type == settings::AntiAimType::yaw)
+	if (settings::legit_bot->anti_aim_type == settings::AntiAimType::yaw)
 	{
 		ucmd->viewangles.x = 89;
 		ucmd->viewangles.y += 180;
 	}
-	else if (settings::AimBot->anti_aim_type == settings::AntiAimType::jitter)
+	else if (settings::legit_bot->anti_aim_type == settings::AntiAimType::jitter)
 	{
 		static bool switcher = false;
 		if (switcher)
@@ -109,7 +114,7 @@ void CAimBot::antiaim(CUserCmd* ucmd)
 
 		ucmd->viewangles -= 90;
 	}
-	else if (settings::AimBot->anti_aim_type == settings::AntiAimType::forward)
+	else if (settings::legit_bot->anti_aim_type == settings::AntiAimType::forward)
 	{
 		ucmd->viewangles.x = 89.f;
 		ucmd->viewangles.y *= -1.f;

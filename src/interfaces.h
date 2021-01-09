@@ -27,6 +27,7 @@ public:
 	ADD_INTERFACE(surface, ISurface);
 	ADD_INTERFACE(lua_shared, LUA::Shared);
 	ADD_INTERFACE(engine_trace, IEngineTrace);
+	ADD_INTERFACE(render_context, IMatRenderContext);
 public:
 	void init();
 

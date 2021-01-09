@@ -39,8 +39,8 @@ static bool screen_transform(const Vector& in, Vector& out)
 bool CMath::world_to_screen2(const Vector& in, Vector& out)
 {
 	if (screen_transform(in, out)) {
-		out.x = (Globals->screen_width / 2.0f) + (out.x * Globals->screen_width) / 2.0f;
-		out.y = (Globals->screen_height / 2.0f) - (out.y * Globals->screen_height) / 2.0f;
+		out.x = (globals->screen_width / 2.0f) + (out.x * globals->screen_width) / 2.0f;
+		out.y = (globals->screen_height / 2.0f) - (out.y * globals->screen_height) / 2.0f;
 
 		return true;
 	}
@@ -54,7 +54,7 @@ bool CMath::world_to_screen(Vector in, Vector& out)
 
 	if (w > 0.001f)
 	{
-		int width, height; width = Globals->screen_width; height = Globals->screen_height;
+		int width, height; width = globals->screen_width; height = globals->screen_height;
 
 		float fl1DBw = 1 / w;
 		out.x = (width / 2) + (0.5f * ((w2sm[0][0] * in.x + w2sm[0][1] * in.y + w2sm[0][2] * in.z + w2sm[0][3]) * fl1DBw) * width + 0.5f);

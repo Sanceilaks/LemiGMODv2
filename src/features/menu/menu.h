@@ -1,12 +1,13 @@
 #pragma once
 #include <imgui/imgui.h>
-#include <vector>
 
-class CMenu
+class Menu
 {
 public:
-	std::vector<ImFont*> menu_font;
+	ImFont* menu_button_font = nullptr;
+	ImFont* menu_font = nullptr;
+	
 	void draw();
 
-	bool is_open;
-}; extern CMenu* Menu;
+	bool is_open = true;
+}; extern Menu* menu;

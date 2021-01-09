@@ -10,7 +10,7 @@ Misc* misc = new Misc();
 
 void Misc::bhop(CUserCmd* cmd)
 {
-    if (!settings::Misc->bhop_enable)
+    if (!settings::misc->bhop_enable)
         return;
 
     CBasePlayer* local_player = CBasePlayer::get_local_player();
@@ -50,7 +50,7 @@ void Misc::bhop(CUserCmd* cmd)
 
 void Misc::legit_strafe(CUserCmd* cmd)
 {
-    if (!settings::Misc->auto_strafe_enable)
+    if (!settings::misc->auto_strafe_enable)
         return;
 
     CBasePlayer* local_player = CBasePlayer::get_local_player();

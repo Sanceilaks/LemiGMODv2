@@ -1,20 +1,26 @@
 #pragma once
-#include <imgui/imgui.h>
+
 #define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
+#include <tools/color.h>
+
 
 namespace ImGui
 {
-	//bool ToggleButton(const char* label, bool* v, const ImVec2& size_arg = ImVec2(0, 0));
-	//// Combo box helper allowing to pass an array of strings.
-	//bool Combo(const char* label, int* currIndex, std::vector<std::string>& values);
-	//bool BeginGroupBox(const char* name, const ImVec2& size_arg = ImVec2(0, 0));
-	//void EndGroupBox();
-	bool Hotkey(const char* label, int* k, const ImVec2& size_arg = ImVec2(0, 0));
+	static float ANIM_SPEED = 0.009f;
 
+	IMGUI_API bool RoundedButtonEx(const char* label, const ImVec2& size_args, float rounding, ImGuiButtonFlags flags);
+	IMGUI_API bool RoundedButton(const char* label, float rounding = 2.f, const ImVec2& size = ImVec2(0, 0));
 
-	//bool ListBox(const char* label, int* current_item, std::string items[], int items_count, int height_items);
-	//bool ListBox(const char* label, int* current_item, std::function<const char* (int)> lambda, int items_count, int height_in_items);
-	//bool Combo(const char* label, int* current_item, std::function<const char* (int)> lambda, int items_count, int height_in_items);
-	//bool ItemHoverable(const ImRect& bb, ImGuiID id);
+	IMGUI_API void ToggleButton(const char* str_id, bool* v, const ImVec2& size = ImVec2(0, 0));
+
+	IMGUI_API bool MenuButton(const char* label, const ImVec2& size_args, const ImVec2& pos, Color color, Color text_color, ImFont* font);
+
+	IMGUI_API void BeginGroupPanel(const char* label, const ImVec2& size = ImVec2(-1.f, -1.f), Color bg_color = Color(0, 0, 0), Color text_bg_color = Color(0, 0, 0));
+	IMGUI_API void EndGroupPanel();
+
+	IMGUI_API bool SizedCombo(const char* label, int* current_item, const char* const items[], int items_count, ImVec2 size, int height_in_items = -1);
+
+	IMGUI_API bool Hotkey(const char* label, int* k, const ImVec2& size_arg = ImVec2(0, 0));
 }

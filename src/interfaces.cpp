@@ -29,6 +29,8 @@ void CInterfaces::init()
 	view_render = **(IViewRender***)((*(uintptr_t**)client)[27] + 0x5);
 
 	render = **(IRender***)((*(uintptr_t**)render_view)[12] + 0x5);
+
+	render_context = material_system->GetRenderContext();
 }
 
 void CInterfaces::print_interfaces()

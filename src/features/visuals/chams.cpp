@@ -11,7 +11,7 @@ CChams* Chams = new CChams();
 
 void CChams::draw()
 {
-	if (!Interfaces->engine->is_in_game() || !settings::ESP->chams_enable /*|| Menu->is_open*/)
+	if (!Interfaces->engine->is_in_game() || !settings::esp->chams_enable /*|| Menu->is_open*/)
 		return;
 
 	if (Interfaces->engine->is_taking_screenshot())
@@ -25,7 +25,7 @@ void CChams::draw()
 	DebugWhite->SetMaterialVarFlag(MATERIAL_VAR_SELFILLUM, true);
 	DebugWhite->AddRef();
 
-	Interfaces->render->Push3DView(Globals->view, 0, nullptr, Interfaces->view_render->GetFrustum());
+	Interfaces->render->Push3DView(globals->view, 0, nullptr, Interfaces->view_render->GetFrustum());
 
 
 	//if (settings::AimBot->fake_angel)
@@ -42,22 +42,23 @@ void CChams::draw()
 	//	local_player->set_view_angels(last);
 	//}
 
-	for (int i = 1; i <= Interfaces->engine->get_max_clients(); i++) {
+	for (int i = 1; i <= Interfaces->engine->get_max_clients(); i++) 
+	{
 		CBasePlayer* player = (CBasePlayer*)CBasePlayer::get_by_index(i);
 
 		if (!player || !player->is_player() || !player->is_alive() || player == local_player || player->is_dormant())
 			continue;
 
-		if (settings::ESP->chams_type == 1)
+		if (settings::esp->chams_type == 1)
 		{
 			player->draw_model(STUDIO_RENDER);
 			Interfaces->model_render->ForcedMaterialOverride(nullptr);
 		}
-		else if (settings::ESP->chams_type == 0)	//settings::ESP->chams_color
+		else if (settings::esp->chams_type == 0)	//settings::ESP->chams_color
 		{
 			Interfaces->model_render->ForcedMaterialOverride(DebugWhite);
-			Interfaces->render_view->SetColorModulation(settings::ESP->chams_color);
-			Interfaces->render_view->SetBlend(settings::ESP->chams_color[3]);
+			Interfaces->render_view->SetColorModulation(settings::esp->chams_color);
+			Interfaces->render_view->SetBlend(settings::esp->chams_color[3]);
 			player->draw_model(STUDIO_RENDER);
 			Interfaces->model_render->ForcedMaterialOverride(nullptr);
 		}

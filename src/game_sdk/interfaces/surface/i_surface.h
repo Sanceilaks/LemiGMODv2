@@ -61,7 +61,7 @@ enum class FontDrawType
 
 class ISurface
 {
-public:			//Surface draw funcs == screen will grabbed
+public:			//https://imgur.com/vmGXsx7
 	void unlock_cursor()
 	{
 		using orig_fn = void(__thiscall*)(ISurface*);
@@ -74,11 +74,18 @@ public:			//Surface draw funcs == screen will grabbed
 		return (*(orig_fn**)this)[62](this);
 	}
 
-	void set_drawing_color(int r, int g, int b, int a = 255) {
+	void set_drawing_color(int r, int g, int b, int a = 255)
+	{
 		using original_fn = void(__thiscall*)(ISurface*, int, int, int, int);
 		return (*(original_fn**)this)[11](this, r, g, b, a);
 	}
 
+	void set_drawing_color(Color color)
+	{
+		using original_fn = void(__thiscall*)(ISurface*, Color);
+		return (*(original_fn**)this)[10](this, color);
+	}
+	
 	void draw_filled_rect(int x0, int y0, int x1, int y1)
 	{
 		using original_fn = void(__thiscall*)(ISurface*, int, int, int, int);
@@ -109,6 +116,12 @@ public:			//Surface draw funcs == screen will grabbed
 		return (*(fn**)this)[18](this, color);
 	}
 
+	void set_text_color(int r, int g, int b, unsigned int a = 0)
+	{
+		using fn = void(__thiscall*)(ISurface*, int, int, int, unsigned int);
+		return (*(fn**)this)[19](this, r, g, b, a);
+	}
+	
 	void set_text_pos(int x, int y)
 	{
 		using fn = void(__thiscall*)(ISurface*, int, int);
@@ -145,6 +158,18 @@ public:			//Surface draw funcs == screen will grabbed
 		return (*(fn**)this)[100](this, x, y, radius, segments);
 	}
 
+
+	void draw_filled_rect_array(IntRect* rects, int rect_num)
+	{
+		using fn = void(__thiscall*)(void*, void*, int);
+		static fn func;
+
+		if (!func)
+			func = (fn)(MemTools::pattern_scaner("vguimatsurface.dll", "55 8B EC 6A FF 68 ? ? ? ? 64 A1 ? ? ? ? 50 64 89 25 ? ? ? ? 83 EC 48"));
+
+		func(this, rects, rect_num);
+	}
+	
 	void start_drawing()
 	{
 		using StartDrawingFn = void(__thiscall*)(void*);

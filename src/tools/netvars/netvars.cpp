@@ -67,8 +67,8 @@ namespace netvar_manager {
 		std::map< std::string, std::map< uintptr_t, std::string > > var_dump;
 		for (auto client_class = Interfaces->client->get_all_classes();
 			client_class;
-			client_class = client_class->Next_ptr) {
-			const auto table = reinterpret_cast<recv_table*>(client_class->Recvtable_ptr);
+			client_class = client_class->next_ptr) {
+			const auto table = reinterpret_cast<recv_table*>(client_class->recvtable_ptr);
 			const auto table_name = table->table_name;
 			const auto table_name_hash = fnv::hash(table_name);
 

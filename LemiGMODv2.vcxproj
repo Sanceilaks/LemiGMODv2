@@ -165,8 +165,10 @@
     <ClCompile Include="src\features\rage\rage.cpp" />
     <ClCompile Include="src\features\visuals\chams.cpp" />
     <ClCompile Include="src\features\visuals\esp.cpp" />
+    <ClCompile Include="src\features\visuals\glow.cpp" />
     <ClCompile Include="src\features\visuals\visuals.cpp" />
     <ClCompile Include="src\globals.cpp" />
+    <ClCompile Include="src\hook\hooks\client\read_pixels_hook.cpp" />
     <ClCompile Include="src\hook\hooks\client\render_view_hook.cpp" />
     <ClCompile Include="src\hook\hooks\client\view_render_hook.cpp" />
     <ClCompile Include="src\hook\hooks\directx\end_scane_hook.cpp" />
@@ -212,8 +214,13 @@
     <ClInclude Include="src\features\rage\rage.h" />
     <ClInclude Include="src\features\visuals\chams.h" />
     <ClInclude Include="src\features\visuals\esp.h" />
+    <ClInclude Include="src\features\visuals\glow.h" />
     <ClInclude Include="src\features\visuals\visuals.h" />
+    <ClInclude Include="src\game_sdk\classes\c_utl_memory.h" />
+    <ClInclude Include="src\game_sdk\classes\c_utl_vector.h" />
     <ClInclude Include="src\game_sdk\classes\c_view_setup.h" />
+    <ClInclude Include="src\game_sdk\classes\platform.h" />
+    <ClInclude Include="src\game_sdk\entitys\weapons.h" />
     <ClInclude Include="src\game_sdk\interfaces\client\i_view_render.h" />
     <ClInclude Include="src\game_sdk\interfaces\engine\iv_model_render.h" />
     <ClInclude Include="src\game_sdk\interfaces\engine\i_engine_trace.h" />
@@ -226,6 +233,7 @@
     <ClInclude Include="src\game_sdk\interfaces\materialsystem\material_system_staff.h" />
     <ClInclude Include="src\game_sdk\interfaces\surface\i_surface.h" />
     <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\hook\hooks\client\read_pixels_hook.h" />
     <ClInclude Include="src\hook\hooks\client\render_view_hook.h" />
     <ClInclude Include="src\hook\hooks\client\view_render_hook.h" />
     <ClInclude Include="src\hook\hooks\directx\end_scane_hook.h" />

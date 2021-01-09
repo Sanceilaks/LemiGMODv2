@@ -18,17 +18,17 @@ LRESULT STDMETHODCALLTYPE my_wndproc(HWND window, UINT message_type, WPARAM w_pa
     if (message_type == WM_KEYDOWN)
     {
         if (w_param == VK_INSERT)
-            Menu->is_open = !Menu->is_open;
+            menu->is_open = !menu->is_open;
 
 
-        Globals->win_buttons[w_param] = true;
+        globals->win_buttons[w_param] = true;
     }
     else if (message_type == WM_KEYUP)
     {
-        Globals->win_buttons[w_param] = false;
+        globals->win_buttons[w_param] = false;
     }
 
-    if (ImGui_ImplWin32_WndProcHandler(window, message_type, w_param, l_param) && Menu->is_open)
+    if (ImGui_ImplWin32_WndProcHandler(window, message_type, w_param, l_param) && menu->is_open)
     {
         return true;
     }
@@ -49,15 +49,18 @@ void init(IDirect3DDevice9* device)
         ImGui::GetIO().IniFilename = nullptr;
         ImGui::StyleColorsDark();
 
-        memset(Globals->win_buttons, false, 1032 * sizeof(bool));
+        memset(globals->win_buttons, false, 1032 * sizeof(bool));
 
         wnd_proc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(game_hwnd, GWLP_WNDPROC, LONG_PTR(my_wndproc)));
 
-        RenderTool->init(device);
+        render_tool->init(device);
 
-        RenderTool->create_im_font(Menu->menu_font, "C:\\Windows\\Fonts\\Corbel.ttf", 30);
-       
-        Interfaces->engine->get_screen_size(Globals->screen_width, Globals->screen_height);
+        //RenderTool->create_im_font(menu->menu_font, "C:\\Windows\\Fonts\\Corbel.ttf", 30);
+
+        menu->menu_button_font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 35.f, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+        menu->menu_font = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Segoeuib.ttf", 14.f, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+    	
+        Interfaces->engine->get_screen_size(globals->screen_width, globals->screen_height);
 
         is_init = true;
     }
@@ -71,12 +74,11 @@ long __stdcall end_scane_hook::hook(IDirect3DDevice9* device)
 
     Interfaces->engine->get_screen_size(w, h);
 
-    if (w != Globals->screen_width || h != Globals->screen_height)
-        RenderTool->init(device);
+    if (w != globals->screen_width || h != globals->screen_height)
+        render_tool->init(device);
 
-    Globals->screen_width = w;
-    Globals->screen_height = h;
-
+    globals->screen_width = w;
+    globals->screen_height = h;
 
     if (!is_init)
         init(device);
@@ -92,7 +94,7 @@ long __stdcall end_scane_hook::hook(IDirect3DDevice9* device)
 
     device->SetRenderState(D3DRS_COLORWRITEENABLE, 0xffffffff);
 	
-    RenderTool->render_frame();
+    render_tool->render_frame();
 
     pixel_state->Apply();
     pixel_state->Release();

@@ -26,7 +26,7 @@ namespace settings
 		bool chams_enable = true;
 		int chams_type = 0;  //0 - flat; 1 - wh
 		float chams_color[4] = { 1, 0, 0, 1 };
-	}; extern CESP* ESP;
+	}; extern CESP* esp;
 
 	class CMisc
 	{
@@ -34,7 +34,7 @@ namespace settings
 		bool bhop_enable = true;
 		bool auto_strafe_enable = false;
 
-	}; extern CMisc* Misc;
+	}; extern CMisc* misc;
 
 	class CAimBot
 	{
@@ -43,7 +43,7 @@ namespace settings
 		bool silent = true;
 		bool only_visible = true;
 		bool auto_fire = false;
-		int fov = 20;
+		float fov = 20;
 
 		bool anti_aim_enable = false;
 		int anti_aim_type = AntiAimType::yaw;
@@ -51,7 +51,7 @@ namespace settings
 
 		int aimkey = VK_MENU;
 
-	}; extern CAimBot* AimBot;
+	}; extern CAimBot* legit_bot;
 
 	class CRage
 	{
@@ -60,14 +60,14 @@ namespace settings
 		bool silent = true;
 		bool only_visible = true;
 		
-	}; extern CRage* Rage;
+	}; extern CRage* rage;
 	
 	class CVisuals
 	{
 	public:
 		bool draw_fov = false;
 
-	}; extern CVisuals* Visuals;
+	}; extern CVisuals* visuals;
 }
 
 
@@ -78,12 +78,13 @@ public:
 	CViewSetup view;
 
 	bool win_buttons[1032];
-
+	bool screen_grab = false;
+	
 	QAngle last_angel;
 
-}; extern CGlobals* Globals;
+}; extern CGlobals* globals;
 
 static bool is_key_presed(int key)
 {
-	return Globals->win_buttons[key];
+	return globals->win_buttons[key];
 }

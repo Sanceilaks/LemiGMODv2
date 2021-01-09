@@ -7,11 +7,12 @@ class IClientRenderable;
 struct studiohdr_t;
 struct StudioDecalHandle_t; //MAY BE BUG
 struct studiohwdata_t;
-class CStudioHdr;
 struct LightCacheHandle_t;
 struct ModelRenderInfo_t;
+class c_studio_hdr;
 
 typedef void* ModelInstanceHandle_t;
+
 
 
 enum OverrideType_t
@@ -90,7 +91,7 @@ public:
 	// of the materials the model was compiled with
 	virtual void	ForcedMaterialOverride(IMaterial* newMaterial, OverrideType_t nOverrideType = OVERRIDE_NORMAL) = 0;
 
-	virtual void	SetViewTarget(const CStudioHdr* pStudioHdr, int nBodyIndex, const Vector& target) = 0;
+	virtual void	SetViewTarget(const c_studio_hdr* pStudioHdr, int nBodyIndex, const Vector& target) = 0;
 
 	// Creates, destroys instance data to be associated with the model
 	virtual ModelInstanceHandle_t CreateInstance(IClientRenderable* pRenderable, LightCacheHandle_t* pCache = NULL) = 0;

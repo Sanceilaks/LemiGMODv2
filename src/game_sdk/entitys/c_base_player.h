@@ -27,13 +27,27 @@ class CBasePlayer : public CBaseEntity
 public:
 	NETVAR("DT_BasePlayer", "m_fFlags", get_flags, int);
 	NETVAR("DT_BasePlayer", "m_vecViewOffset[0]", get_view_offset, Vector);
-	NETVAR("DT_BaseCombatCharacter", "m_hActiveWeapon", ActiveWeaponHandle, uintptr_t);
+	NETVAR("DT_BasePlayer", "m_hActiveWeapon", active_weapon_handle, uintptr_t);
 	NETVAR("DT_BasePlayer", "m_vecVelocity[0]", get_velocity, Vector);
-	
+	NETVAR("DT_BasePlayer", "hMyWeapons", get_weapons, uintptr_t);
+	NETVAR("DT_BasePlayer", "m_bloodColor", get_blood_color, Color);
+	NETVAR("DT_BasePlayer", "m_Local", get_local, uintptr_t);
+	NETVAR("DT_BasePlayer", "m_iAmmo", get_ammo, int);
+	NETVAR("DT_BasePlayer", "m_fOnTarget", get_on_target, int);
+	NETVAR("DT_BasePlayer", "m_nTickBase", get_tick_base, float);
+	NETVAR("DT_BasePlayer", "m_nNextThinkTick", get_next_think_tick, float);
+	NETVAR("DT_BasePlayer", "m_flFriction", get_friction, float);
+	NETVAR("DT_BasePlayer", "flDeathTime", get_death_time, float);
+	NETVAR("DT_BasePlayer", "deadflag", get_dead_flag, int);
+	NETVAR("DT_BasePlayer", "m_iDefaultFOV", get_default_fov, int);
+	NETVAR("DT_BasePlayer", "m_hVehicle", get_vehicle_handle, uintptr_t);
+	NETVAR("DT_BasePlayer", "m_iObserverMode", get_observer_mode, int);
+	NETVAR("DT_BasePlayer", "m_hObserverTarget", get_observer_target_handle, uintptr_t);
+		
 	int get_move_type()
 	{
 		auto glua = Interfaces->lua_shared->get_interface(LUA::Type::client);
-
+		
 		if (!glua)
 			return {};
 
@@ -114,7 +128,7 @@ public:
 
 		glua->Pop(4);
 
-		color.SetColor(r, g, b);
+		color.set_color(r, g, b);
 		return color;
 	}
 

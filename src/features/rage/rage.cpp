@@ -7,7 +7,7 @@ Rage* rage = new Rage();
 
 void Rage::handle(CUserCmd* cmd)
 {
-	if (!Interfaces->engine->is_in_game() || !settings::Rage->rage_enable)
+	if (!Interfaces->engine->is_in_game() || !settings::rage->rage_enable)
 		return;
 
 
@@ -21,7 +21,7 @@ void Rage::handle(CUserCmd* cmd)
 
 	/*if (settings::AimBot->auto_fire) */cmd->buttons |= IN_ATTACK;
 
-	if (!settings::Rage->silent)
+	if (!settings::rage->silent)
 		Interfaces->engine->set_view_angles(ang);
 }
 

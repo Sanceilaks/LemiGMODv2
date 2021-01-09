@@ -84,11 +84,11 @@ bool __stdcall create_move_hook::hook(float frame_time, CUserCmd* ucmd)
 	
     if (sendpacket)
     {
-        Globals->last_angel = ucmd->viewangles;
+        globals->last_angel = ucmd->viewangles;
     }
 
-    if (AimBot->is_aiming) return !settings::AimBot->silent;
-    if (settings::Rage->rage_enable || settings::Rage->silent) return !settings::Rage->silent;
+    if (AimBot->is_aiming) return !settings::legit_bot->silent;
+    if (settings::rage->rage_enable || settings::rage->silent) return !settings::rage->silent;
 	
     return false;
 }

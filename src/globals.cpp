@@ -2,13 +2,13 @@
 
 using namespace settings;
 
-CGlobals* Globals = new CGlobals();
-CESP* settings::ESP = new CESP();
+CGlobals* globals = new CGlobals();
+CESP* settings::esp = new CESP();
 
-CMisc* settings::Misc = new CMisc();
+CMisc* settings::misc = new CMisc();
 
-CAimBot* settings::AimBot = new CAimBot();
+CAimBot* settings::legit_bot = new CAimBot();
 
-CVisuals* settings::Visuals = new CVisuals();
+CVisuals* settings::visuals = new CVisuals();
 
-CRage* settings::Rage = new CRage();
+CRage* settings::rage = new CRage();
